@@ -1,8 +1,7 @@
 import express from "express";
-import { CreatePost } from "../controllers/RegistererController.mjs";
+import { RegisterController } from "../controllers/RegistererController.mjs";
 
+export const RegisterRouter = Router();
 
-export const RegisterRouter = express.Router();
-
-RegisterRouter.post("/", CreatePost)
+RegisterRouter.post("/", RegisterController.createRegister)
 
