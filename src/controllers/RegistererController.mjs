@@ -1,9 +1,8 @@
 import Register from "../model/User/Register.mjs";
 
-export const CreatePost = async() =>{
+export const createPost = async() =>{
 
 }
 
 
 
-export default RegisterController
