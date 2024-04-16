@@ -1,6 +1,7 @@
-import { Router } from "express";
-import { createPost } from "../controllers/RegistererController.mjs";
+import express from "express";
+import { RegisterController } from "../controllers/RegistererController.mjs";
 
 export const RegisterRouter = Router();
 
-RegisterRouter.post("/", createPost);
+RegisterRouter.post("/", RegisterController.createRegister)
+
