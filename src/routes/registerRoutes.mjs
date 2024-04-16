@@ -1,4 +1,4 @@
-import express from "express";
+import {Router} from "express";
 import { RegisterController } from "../controllers/RegistererController.mjs";
 
 export const RegisterRouter = Router();
