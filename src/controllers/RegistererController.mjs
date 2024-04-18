@@ -10,9 +10,11 @@ export const RegisterController = {
 
     try{
       //First declare a new variable to call the "savedRegister",
-      //"The Await" keyword has been use and call the "savedRegister" so while
-      //We are waiting for the client 
+      //"The Await" keyword has been use and call the "savedRegister" so when a new
+      //data has been created it will be saved to the database
       const newRegister = await savedRegister.save()
+
+      //If the saving is success then, it will send back, status(201) and the body
       if(newRegister) res.status(201).send(savedRegister)
 
     }catch(error){
