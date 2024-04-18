@@ -17,6 +17,7 @@ export const RegisterController = {
   },
 
   getPaginatedRegister: async (req, res) => {},
+  getRegisteredID: async(req,res) =>{},
   updateRegister: async (req, res) => {},
   deleteRegister: async (req, res) => {},
 };
