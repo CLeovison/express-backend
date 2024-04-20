@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const RegisterSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   fname: {
     type: String,
     require: true,
@@ -26,4 +26,4 @@ const RegisterSchema = new mongoose.Schema({
     require: true,
   },
 });
-export default mongoose.model("Register", RegisterSchema);
+export default mongoose.model("User", UserSchema);
