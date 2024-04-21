@@ -21,11 +21,16 @@ export const UserController = {
   },
 
   getPaginatedUser: async () => {
-    //So 
+    //So the page variable does have a value of one since all the page started at one
+    //The limit variable sets value to 10, but you can put how many data should be limit in one page
+    //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
+    //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
     const { page = 1, limit = 10, sort = "fname", sortOrder = "asc", ...filters} = req.query;
+    //I use parseInt function so when a user put a string it could automatically convert to number
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
 
+    
     let { sortObj, filterObj } = {};
     sortObj[sort] = sortOrder === "asc" ? 1 : -1;
     filterObj[filters] 
@@ -38,7 +43,9 @@ export const UserController = {
         .exec();
 
 
-        const count = await User.countDocuments();
+      const count = await User.countDocuments();
+
+      const totalPage = Math.ceil(count/limitNum)
     } catch (error) {
       res.stauts(404).send(error);
     }
