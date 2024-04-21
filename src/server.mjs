@@ -2,7 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import { RegisterRouter } from "./routes/registerRoutes.mjs";
+import { UserRouter } from "./routes/UserRoutes.mjs";
+import User from "./model/User/User.mjs";
 dotenv.config();
 
 const app = express();
@@ -15,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log("Database Connectd"))
 .catch(err => console.log(err))
 
-app.use("/register", RegisterRouter);
+app.use("/user", UserRouter);
 
 app.listen(PORT, () => {
   console.log(`Server Running On Port ${PORT}`);

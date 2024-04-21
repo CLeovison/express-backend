@@ -21,9 +21,24 @@ export const UserController = {
   },
 
   getPaginatedUser: async () => {
-    const { page = 1, limit = 10 } = req.query;
+    //So 
+    const { page = 1, limit = 10, sort = "fname", sortOrder = "asc", ...filters} = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
 
+    let { sortObj, filterObj } = {};
+    sortObj[sort] = sortOrder === "asc" ? 1 : -1;
+    filterObj[filters] 
     try {
+      const users = await User.find()
+        .sort(sortObj)
+        .limit(limitNum * 1)
+        .skip((pageNum - 1) * limitNum)
+        .find(filterObj)
+        .exec();
+
+
+        const count = await User.countDocuments();
     } catch (error) {
       res.stauts(404).send(error);
     }
@@ -35,7 +50,7 @@ export const UserController = {
     } catch (error) {
       res.status(404).send(error);
     }
-  },  
+  },
   updateUser: async (req, res) => {
     try {
       const updateUsers = await new User.findByIdAndUpdate(
