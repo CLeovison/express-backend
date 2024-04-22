@@ -37,8 +37,7 @@ export const UserController = {
     //So the value that has been set to sortobject and filterobject is empty object
     //Since when the user set an dedicated filter that he/she wants
     //The backend or api could determine a filter that the user requested
-
-
+    const filterObj = { ...filters};
 
     try {
       const users = await User.find(filterObj)
@@ -59,7 +58,7 @@ export const UserController = {
         count: users.length,
       });
     } catch (error) {
-      res.stauts(401).send(error);
+      res.status(404).send(error);
     }
   },
   getUserID: async (req, res) => {
