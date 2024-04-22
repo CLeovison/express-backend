@@ -37,14 +37,14 @@ export const UserController = {
     //So the value that has been set to sortobject and filterobject is empty object
     //Since when the user set an dedicated filter that he/she wants
     //The backend or api could determine a filter that the user requested
-    const filterObj = ["fname","lname","username","password","confirm","email"]
+
+
 
     try {
       const users = await User.find(filterObj)
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
         .skip((parseInt(page) - 1) * parseInt(limit))
-
         .exec();
 
       const count = await User.countDocuments();
