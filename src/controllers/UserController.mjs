@@ -20,39 +20,51 @@ export const UserController = {
     }
   },
 
-  getPaginatedUser: async () => {
+  getPaginatedUser: async (req, res) => {
     //So the page variable does have a value of one since all the page started at one
     //The limit variable sets value to 10, but you can put how many data should be limit in one page
     //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
     //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
-    const { page = 1, limit = 10, sort = "fname", sortOrder = "asc", ...filters} = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      sort = "fname",
+      sortOrder = "asc",
+      ...filters
+    } = req.query;
     //I use parseInt function so when a user put a string it could automatically convert to number
-    const pageNum = parseInt(page);
-    const limitNum = parseInt(limit);
 
-    
-    let { sortObj, filterObj } = {};
-    sortObj[sort] = sortOrder === "asc" ? 1 : -1;
-    filterObj[filters] 
+    //So the value that has been set to sortobject and filterobject is empty object
+    //Since when the user set an dedicated filter that he/she wants
+    //The backend or api could determine a filter that the user requested
+    const filterObj = ["fname","lname","username","password","confirm","email"]
+
     try {
-      const users = await User.find()
-        .sort(sortObj)
-        .limit(limitNum * 1)
-        .skip((pageNum - 1) * limitNum)
-        .find(filterObj)
-        .exec();
+      const users = await User.find(filterObj)
+        .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit))
 
+        .exec();
 
       const count = await User.countDocuments();
 
-      const totalPage = Math.ceil(count/limitNum)
+      const totalPage = Math.ceil(count / limit);
+
+      res.status(201).json({
+        users,
+        totalPage,
+        currentPage: page,
+        limit,
+        count: users.length,
+      });
     } catch (error) {
-      res.stauts(404).send(error);
+      res.stauts(401).send(error);
     }
   },
   getUserID: async (req, res) => {
     try {
-      const user = new User.find(req.params.id);
+      const user = await User.findById(req.params.id);
       res.status(201).send(user);
     } catch (error) {
       res.status(404).send(error);
@@ -60,12 +72,11 @@ export const UserController = {
   },
   updateUser: async (req, res) => {
     try {
-      const updateUsers = await new User.findByIdAndUpdate(
-        req.params.id,
-        req.body
-      );
+      const updateUsers = await User.findByIdAndUpdate(req.params.id, req.body);
       res.status(201).send(updateUsers);
-    } catch (error) {}
+    } catch (error) {
+      res.status(404).send(error);
+    }
   },
   deleteUser: async (req, res) => {
     try {
