@@ -58,7 +58,8 @@ export const UserController = {
         count: users.length,
       });
     } catch (error) {
-      res.status(404).send(error);
+
+      res.status(404).send({message: error});
     }
   },
   getUserID: async (req, res) => {
