@@ -1,5 +1,7 @@
 import User from "../model/User/User.mjs";
 
+
+
 export const UserController = {
   createUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
@@ -25,24 +27,18 @@ export const UserController = {
     //The limit variable sets value to 10, but you can put how many data should be limit in one page
     //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
     //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
-    const {
-      page = 1,
-      limit = 10,
-      sort = "fname",
-      sortOrder = "asc",
-      ...filters
-    } = req.query;
+    const { page = 1, limit = 10, sort = "fname", sortOrder = "asc", ...filters} = req.query;
     //I use parseInt function so when a user put a string it could automatically convert to number
 
     //So the value that has been set to sortobject and filterobject is empty object
     //Since when the user set an dedicated filter that he/she wants
     //The backend or api could determine a filter that the user requested
-    const filterObj = { ...filters};
+    const filterObj = { ...filters };
 
     try {
       const users = await User.find(filterObj)
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
-        .limit(parseInt(limit))
+        .limit(parseInt(limit) * 1)
         .skip((parseInt(page) - 1) * parseInt(limit))
         .exec();
 
@@ -57,9 +53,11 @@ export const UserController = {
         limit,
         count: users.length,
       });
-    } catch (error) {
+      if(!filterObj) res.status(404)
 
-      res.status(404).send({message: error});
+    } catch (error) {
+     
+      res.status(404).send({ message: error });
     }
   },
   getUserID: async (req, res) => {
