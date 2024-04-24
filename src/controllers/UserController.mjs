@@ -1,7 +1,5 @@
 import User from "../model/User/User.mjs";
 
-
-
 export const UserController = {
   createUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
@@ -27,7 +25,13 @@ export const UserController = {
     //The limit variable sets value to 10, but you can put how many data should be limit in one page
     //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
     //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
-    const { page = 1, limit = 10, sort = "fname", sortOrder = "asc", ...filters} = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      sort = "fname",
+      sortOrder = "asc",
+      ...filters
+    } = req.query;
     //I use parseInt function so when a user put a string it could automatically convert to number
 
     //So the value that has been set to sortobject and filterobject is empty object
@@ -35,10 +39,34 @@ export const UserController = {
     //The backend or api could determine a filter that the user requested
     const filterObj = { ...filters };
 
+    //Validation
+
+    //Validating the limit and page - So in this section i use a Number Function and logical !Not inorder to
+    //Verify if the input that the user put is a number, if the user put a string then there will be a error
+    //message that the user will receive, if the user put a Number then the data will proceed fetching
+    if (!Number.isInteger(Number(limit)) || !Number.isInteger(Number(page))) {
+      return res
+        .status(404)
+        .send({ message: "Invalid limit or page number provided" });
+    }
+
+    //Validation of SorOrder - So in this section of 
+    if (!["asc", "desc"].includes(sortOrder)) {
+      return res
+        .status(404)
+        .send({ message: "Sort order must be asc or desc" });
+    }
+
+    if (
+      filters.fname &&
+      !filters.fname.split(",").every((tag) => typeof tag === "string")
+    ) {
+      return res.status(400).send({ message: "Invalid tags format" });
+    }
     try {
       const users = await User.find(filterObj)
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
-        .limit(parseInt(limit) * 1)
+        .limit(parseInt(limit))
         .skip((parseInt(page) - 1) * parseInt(limit))
         .exec();
 
@@ -53,10 +81,7 @@ export const UserController = {
         limit,
         count: users.length,
       });
-      if(!filterObj) res.status(404)
-
     } catch (error) {
-     
       res.status(404).send({ message: error });
     }
   },
