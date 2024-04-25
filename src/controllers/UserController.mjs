@@ -50,7 +50,8 @@ export const UserController = {
         .send({ message: "Invalid limit or page number provided" });
     }
 
-    //Validation of SorOrder - So in this section of 
+    //Validation of SorOrder - So in this section, if the user doesn't put asc desc, there will be an error
+    //message that they will receive
     if (!["asc", "desc"].includes(sortOrder)) {
       return res
         .status(404)
@@ -58,11 +59,11 @@ export const UserController = {
     }
 
     if (
-      filters.fname &&
-      !filters.fname.split(",").every((tag) => typeof tag === "string")
+      filterObj.fname && !filterObj.fname.split(",").every((tag) => typeof tag === "string")
     ) {
       return res.status(400).send({ message: "Invalid tags format" });
     }
+
     try {
       const users = await User.find(filterObj)
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
@@ -88,7 +89,7 @@ export const UserController = {
   getUserID: async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
-      res.status(201).send(user);
+      res.status(200).send(user);
     } catch (error) {
       res.status(404).send(error);
     }
@@ -105,7 +106,7 @@ export const UserController = {
     try {
       const deleteUser = await new User.findByIdAndDelete(req.params.id);
       res
-        .status(201)
+        .status(200)
         .send({ message: "The User Has Been Successfully Deleted" });
     } catch (error) {
       res.status(404).send(error);
