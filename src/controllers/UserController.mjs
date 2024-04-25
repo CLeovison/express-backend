@@ -19,6 +19,9 @@ export const UserController = {
       res.status(404).send(error);
     }
   },
+    searchUser: async (req,res) => {
+    console.log(req.body);
+  },
 
   getPaginatedUser: async (req, res) => {
     //So the page variable does have a value of one since all the page started at one
@@ -38,31 +41,6 @@ export const UserController = {
     //Since when the user set an dedicated filter that he/she wants
     //The backend or api could determine a filter that the user requested
     const filterObj = { ...filters };
-
-    //Validation
-
-    //Validating the limit and page - So in this section i use a Number Function and logical !Not inorder to
-    //Verify if the input that the user put is a number, if the user put a string then there will be a error
-    //message that the user will receive, if the user put a Number then the data will proceed fetching
-    if (!Number.isInteger(Number(limit)) || !Number.isInteger(Number(page))) {
-      return res
-        .status(404)
-        .send({ message: "Invalid limit or page number provided" });
-    }
-
-    //Validation of SorOrder - So in this section, if the user doesn't put asc desc, there will be an error
-    //message that they will receive
-    if (!["asc", "desc"].includes(sortOrder)) {
-      return res
-        .status(404)
-        .send({ message: "Sort order must be asc or desc" });
-    }
-
-    if (
-      filterObj.fname && !filterObj.fname.split(",").every((tag) => typeof tag === "string")
-    ) {
-      return res.status(400).send({ message: "Invalid tags format" });
-    }
 
     try {
       const users = await User.find(filterObj)
@@ -94,6 +72,7 @@ export const UserController = {
       res.status(404).send(error);
     }
   },
+
   updateUser: async (req, res) => {
     try {
       const updateUsers = await User.findByIdAndUpdate(req.params.id, req.body);
@@ -104,7 +83,7 @@ export const UserController = {
   },
   deleteUser: async (req, res) => {
     try {
-      const deleteUser = await new User.findByIdAndDelete(req.params.id);
+      const deleteUser = await User.findByIdAndDelete(req.params.id);
       res
         .status(200)
         .send({ message: "The User Has Been Successfully Deleted" });
