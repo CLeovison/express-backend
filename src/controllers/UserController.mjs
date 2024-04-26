@@ -19,8 +19,14 @@ export const UserController = {
       res.status(404).send(error);
     }
   },
-    searchUser: async (req,res) => {
-    console.log(req.body);
+  searchUser: async (req, res) => {
+    const search = req.query.search || "";
+
+    try{
+      
+    }catch(err){
+      
+    }
   },
 
   getPaginatedUser: async (req, res) => {
@@ -44,6 +50,7 @@ export const UserController = {
 
     try {
       const users = await User.find(filterObj)
+        //Computed Property Names/Object Initializer
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
         .skip((parseInt(page) - 1) * parseInt(limit))
@@ -92,3 +99,6 @@ export const UserController = {
     }
   },
 };
+
+//Reference
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
