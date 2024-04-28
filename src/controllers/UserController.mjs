@@ -49,7 +49,7 @@ export const UserController = {
     const filterObj = { ...filters };
 
     try {
-      const users = await User.find(filterObj)
+      const users = await User.find(filterObj, {fname: req.body.query, })
         //Computed Property Names/Object Initializer
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
