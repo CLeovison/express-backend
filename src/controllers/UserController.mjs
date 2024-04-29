@@ -19,15 +19,6 @@ export const UserController = {
       res.status(404).send(error);
     }
   },
-  searchUser: async (req, res) => {
-    const search = req.query.search || "";
-
-    try{
-      
-    }catch(err){
-      
-    }
-  },
 
   getPaginatedUser: async (req, res) => {
     //So the page variable does have a value of one since all the page started at one
@@ -49,7 +40,7 @@ export const UserController = {
     const filterObj = { ...filters };
 
     try {
-      const users = await User.find(filterObj, {fname: req.body.query, })
+      const users = await User.find(filterObj, {fname: req.body.query})
         //Computed Property Names/Object Initializer
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))

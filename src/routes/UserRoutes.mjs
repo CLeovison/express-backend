@@ -6,6 +6,6 @@ export const UserRouter = Router();
 UserRouter.post("/", UserController.createUser);
 UserRouter.get("/", UserController.getPaginatedUser);
 UserRouter.get("/:id", UserController.getUserID);
-UserRouter.get("/search", UserController.searchUser);
+
 UserRouter.put("/:id", UserController.updateUser);
 UserRouter.delete("/:id", UserController.deleteUser);
