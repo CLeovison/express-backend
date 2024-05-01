@@ -72,14 +72,22 @@ export const UserController = {
     }
   },
   getSearch: async(req,res) =>{
-      try{
-        const searching = await User.find()
 
+    const searchTerm = req.query.term;
 
-        res.status(201).send(searching)
-      }catch(error){
-        res.status(404).send(error)
-      }
+    if (!searchTerm) {
+        return res.status(400).json({ message: "No search term provided" });
+    }
+    try {
+        const results = await User.find({
+            $text: { $search: searchTerm }
+        });
+
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching for users", error });
+    }
+     
   },
 
   updateUser: async (req, res) => {
