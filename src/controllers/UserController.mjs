@@ -30,6 +30,7 @@ export const UserController = {
       limit = 10,
       sort = "fname",
       sortOrder = "asc",
+
       ...filters
     } = req.query;
     //I use parseInt function so when a user put a string it could automatically convert to number
@@ -39,7 +40,7 @@ export const UserController = {
     const filterObj = { ...filters };
 
     try {
-      const users = await User.find(filterObj, {fname: req.body.query})
+      const users = await User.find(filterObj)
         //Computed Property Names/Object Initializer
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
@@ -67,6 +68,24 @@ export const UserController = {
     } catch (error) {
       res.status(404).send(error);
     }
+  },
+  getSearch: async(req,res) =>{
+
+    const searchTerm = req.query.term;
+
+    if (!searchTerm) {
+        return res.status(400).json({ message: "No search term provided" });
+    }
+    try {
+        const results = await User.find({
+            $text: { $search: searchTerm }
+        });
+
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching for users", error });
+    }
+     
   },
 
   updateUser: async (req, res) => {
