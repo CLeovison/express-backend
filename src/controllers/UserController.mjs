@@ -35,7 +35,6 @@ export const UserController = {
     //I use parseInt function so when a user put a string it could automatically convert to number
 
     //So the value that has been set to sortobject and filterobject is empty object
-    //Since when the user set an dedicated filter that he/she wants
     //The backend or api could determine a filter that the user requested
     const filterObj = { ...filters };
 
@@ -45,7 +44,6 @@ export const UserController = {
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
         .skip((parseInt(page) - 1) * parseInt(limit))
-        .exec();
 
       const count = await User.countDocuments();
 
