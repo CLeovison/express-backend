@@ -8,6 +8,11 @@ const queryValidation = Joi.object({
   sortOrder: Joi.string().valid("asc", "desc").default("asc"),
 });
 
+const userValidation =  Joi.object({
+  fname: Joi.string()
+})
+
+
 //Middleware Validation
 export const validationQuery = (req, res, next) => {
   const { error } = queryValidation.validate(req.query);
