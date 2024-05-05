@@ -16,8 +16,8 @@ const userValidation = Joi.object({
   password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
   confirm: Joi.ref("password"),
   email: Joi.string()
-    .email({ minDomainSegments: 3, tlds: { allow: ["com", "net"] } })
-    .required()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .required(),
 });
 
 //Middleware Validation
@@ -38,6 +38,7 @@ export const registerValidation = (req, res, next) => {
   if (error) {
     res
       .status(404)
-      .json({ message: "Fill Up All The Forms", details: error.details });
+      .json({ message: "Invalid output/please provide a correct output", details: error.details });
   }
+  next();
 };
