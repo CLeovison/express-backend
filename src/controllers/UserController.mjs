@@ -1,14 +1,14 @@
 import User from "../model/User/User.mjs";
-
+import bcrypt from 'bcryptjs'
 export const UserController = {
   createUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
     const newUser = new User(req.body);
 
-    if(!newUser === ''){
-      res.status(401).json({message: "The form must be fill up"})
-    }else{
-      res.status(201).json({message: "Registration Successful"})
+    if (!newUser === "") {
+      res.status(401).json({ message: "The form must be fill up" });
+    } else {
+      res.status(201).json({ message: "Registration Successful" });
     }
 
     try {
@@ -18,13 +18,23 @@ export const UserController = {
 
       //If the savedUser variable has received the data then it will provide a htttp status code "201" which means it the data was ---
       //--- succesfully received and it will send to "newUser" variable
-   
     } catch (error) {
       //So in the catch block, when the "Try" block didn't receive the data or it has some error, the catch block will display a ---
       //http status "404" and it will send a "Error" message to the user
       res.status(404).send(error);
     }
   },
+  // loginUser: async (req, res) => {
+  //   try {
+  //     const { username, password } = req.body;
+  //     const user = await User.findOne({username});
+  //     if(!user) return res.status(404).json({message: "User Not Found"})
+
+  //     const isMatch = await bcrypt.compare(password, user.password);
+  //     if(!isMatch) return res.status(400).json({message:"Invalid credentials"})
+  //   } catch (error) {
+  // }
+  // },
 
   getPaginatedUser: async (req, res) => {
     //So the page variable does have a value of one since all the page started at one
