@@ -5,6 +5,12 @@ export const UserController = {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
     const newUser = new User(req.body);
 
+    if (newUser === " ") {
+      res.status(401).json({ message: "The Form Must Not Be Empty" });
+    }else{
+    res.status(201)
+  }
+    
     try {
       //In the try catch block the "Await" keyword has been use to wait the data, when the data has been receive in will save
       //that contains the body of UserSchema
@@ -25,24 +31,35 @@ export const UserController = {
     //The limit variable sets value to 10, but you can put how many data should be limit in one page
     //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
     //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
-    const { page = 1, limit = 10, sort = "fname".toLowerCase(), sortOrder = "asc", ...filters} = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      sort = "fname".toLowerCase(),
+      sortOrder = "asc",
+      ...filters
+    } = req.query;
     //I use parseInt function so when a user put a string it could automatically convert to number
 
     //So the value that has been set to sortobject and filterobject is empty object
     //The backend or api could determine a filter that the user requested
     const filterObj = { ...filters };
-    
+
     //Validating the Page And Limit
-    if(!Number.isInteger(Number(limit)) || !Number.isInteger(Number(page))){
-        res.status(404).send({message: "Invalid limit and page provided"})
+    if (!Number.isInteger(Number(limit)) || !Number.isInteger(Number(page))) {
+      res.status(404).send({ message: "Invalid limit and page provided" });
     }
     // Validating the SortOrder
-    if(!['asc','desc'].includes(sortOrder)){
-      res.status(404).send({message: "The order that you must put is asc or desc"})
+    if (!["asc", "desc"].includes(sortOrder)) {
+      res
+        .status(404)
+        .send({ message: "The order that you must put is asc or desc" });
     }
     // //Filter Validation Logic
-    if(filters.fname && !filters.fname.split(',').every(tag => typeof tag === 'string')){
-      res.status(404).send({message: "Invalid Format"})
+    if (
+      filters.fname &&
+      !filters.fname.split(",").every((tag) => typeof tag === "string")
+    ) {
+      res.status(404).send({ message: "Invalid Format" });
     }
 
     try {
@@ -50,7 +67,7 @@ export const UserController = {
         //Computed Property Names/Object Initializer
         .sort({ [sort]: sortOrder === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
-        .skip((parseInt(page) - 1) * parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit));
 
       const count = await User.countDocuments();
 
@@ -75,23 +92,21 @@ export const UserController = {
       res.status(404).send(error);
     }
   },
-  getSearch: async(req,res) =>{
-
+  getSearch: async (req, res) => {
     const searchTerm = req.query.term;
 
     if (!searchTerm) {
-        return res.status(400).json({ message: "No search term provided" });
+      return res.status(400).json({ message: "No search term provided" });
     }
     try {
-        const results = await User.find({
-            $text: { $search: searchTerm }
-        });
+      const results = await User.find({
+        $text: { $search: searchTerm },
+      });
 
-        res.status(200).json(results);
+      res.status(200).json(results);
     } catch (error) {
-        res.status(500).json({ message: "Error searching for users", error });
+      res.status(500).json({ message: "Error searching for users", error });
     }
-     
   },
 
   updateUser: async (req, res) => {
