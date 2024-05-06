@@ -5,12 +5,12 @@ export const UserController = {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
     const newUser = new User(req.body);
 
-    if (newUser === " ") {
-      res.status(401).json({ message: "The Form Must Not Be Empty" });
+    if(!newUser === ''){
+      res.status(401).json({message: "The form must be fill up"})
     }else{
-    res.status(201)
-  }
-    
+      res.status(201).json({message: "Registration Successful"})
+    }
+
     try {
       //In the try catch block the "Await" keyword has been use to wait the data, when the data has been receive in will save
       //that contains the body of UserSchema
@@ -18,7 +18,7 @@ export const UserController = {
 
       //If the savedUser variable has received the data then it will provide a htttp status code "201" which means it the data was ---
       //--- succesfully received and it will send to "newUser" variable
-      if (savedUser) res.status(201).send(newUser);
+   
     } catch (error) {
       //So in the catch block, when the "Try" block didn't receive the data or it has some error, the catch block will display a ---
       //http status "404" and it will send a "Error" message to the user

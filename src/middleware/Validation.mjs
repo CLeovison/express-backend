@@ -36,9 +36,12 @@ export const registerValidation = (req, res, next) => {
   const { error } = userValidation.validate(req.body);
 
   if (error) {
-    res
-      .status(404)
-      .json({ message: "Invalid output/please provide a correct output", details: error.details });
+    res.status(404).json({
+      message: "Invalid output/please provide a correct output",
+      details: error.details,
+    });
   }
+ 
+
   next();
 };
