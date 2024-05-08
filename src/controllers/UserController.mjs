@@ -1,5 +1,7 @@
 import User from "../model/User/User.mjs";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
 export const UserController = {
   createUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
@@ -12,46 +14,38 @@ export const UserController = {
     }
 
     try {
-      //In the try catch block the "Await" keyword has been use to wait the data, when the data has been receive in will save
-      //that contains the body of UserSchema
       const savedUser = await newUser.save();
-
-      //If the savedUser variable has received the data then it will provide a htttp status code "201" which means it the data was ---
-      //--- succesfully received and it will send to "newUser" variable
     } catch (error) {
-      //So in the catch block, when the "Try" block didn't receive the data or it has some error, the catch block will display a ---
-      //http status "404" and it will send a "Error" message to the user
       res.status(404).send(error);
     }
   },
-  // loginUser: async (req, res) => {
-  //   try {
-  //     const { username, password } = req.body;
-  //     const user = await User.findOne({username});
-  //     if(!user) return res.status(404).json({message: "User Not Found"})
+  loginUser: async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      const user = await User.findOne({ username });
+      if (!user) return res.status(404).json({ message: "User Not Found" });
 
-  //     const isMatch = await bcrypt.compare(password, user.password);
-  //     if(!isMatch) return res.status(400).json({message:"Invalid credentials"})
-  //   } catch (error) {
-  // }
-  // },
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch)
+        return res.status(400).json({ message: "Invalid credentials" });
+
+      //JWT Authentication
+      const { sign, verify } = jwt;
+      const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
+
+      res.json({
+        message: "Logged in Successfully",
+        token,
+        user: { id: user._id, username: user.username },
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Invalid Username/Password", error });
+    }
+  },
 
   getPaginatedUser: async (req, res) => {
-    //So the page variable does have a value of one since all the page started at one
-    //The limit variable sets value to 10, but you can put how many data should be limit in one page
-    //The sort variable sets a value of "Fname" since i want to filter the first name in the schema
-    //The sortOrder variable sets to "Asc" value or Assending since i want to filter it upwards
-    const {
-      page = 1,
-      limit = 10,
-      sort = "fname".toLowerCase(),
-      sortOrder = "asc",
-      ...filters
-    } = req.query;
-    //I use parseInt function so when a user put a string it could automatically convert to number
+    const { page = 1, limit = 10, sort = "fname".toLowerCase(), sortOrder = "asc", ...filters } = req.query;
 
-    //So the value that has been set to sortobject and filterobject is empty object
-    //The backend or api could determine a filter that the user requested
     const filterObj = { ...filters };
 
     //Validating the Page And Limit
