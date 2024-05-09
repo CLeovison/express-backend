@@ -43,6 +43,5 @@ export const registerValidation = (req, res, next) => {
   }
  
   next();
-
 };
 

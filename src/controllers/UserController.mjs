@@ -44,7 +44,13 @@ export const UserController = {
   },
 
   getPaginatedUser: async (req, res) => {
-    const { page = 1, limit = 10, sort = "fname".toLowerCase(), sortOrder = "asc", ...filters } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      sort = "fname".toLowerCase(),
+      sortOrder = "asc",
+      ...filters
+    } = req.query;
 
     const filterObj = { ...filters };
 
