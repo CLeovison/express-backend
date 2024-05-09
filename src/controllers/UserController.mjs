@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const UserController = {
-  createUser: async (req, res) => {
+  registerUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
     const newUser = new User(req.body);
 
