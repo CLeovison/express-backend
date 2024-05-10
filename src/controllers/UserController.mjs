@@ -2,6 +2,9 @@ import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+
+
+
 export const UserController = {
   registerUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
@@ -30,6 +33,8 @@ export const UserController = {
         return res.status(400).json({ message: "Invalid credentials" });
 
       //JWT Authentication
+
+
       const { sign, verify } = jwt;
       const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
 

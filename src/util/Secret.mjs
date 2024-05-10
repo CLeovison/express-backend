@@ -1,10 +1,8 @@
-import * as jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-const secretToken = process.env.SECRET_KEY
+export const secretKey = process.env.SECRET_KEY
 
-export const secretKey = async (req,res) =>{
-
-}
+//https://dvmhn07.medium.com/jwt-authentication-in-node-js-a-practical-guide-c8ab1b432a49
+//https://github.com/auth0/node-jsonwebtoken
