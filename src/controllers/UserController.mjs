@@ -2,9 +2,6 @@ import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-
-
-
 export const UserController = {
   registerUser: async (req, res) => {
     // Declaring a new variable to call the UserSchema and requesting the whole body of it
@@ -31,11 +28,10 @@ export const UserController = {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({ message: "Invalid credentials" });
-
+      console.log(password);
       //JWT Authentication
 
 
-      const { sign, verify } = jwt;
       const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
 
       res.json({
