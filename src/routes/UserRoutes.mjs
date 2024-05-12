@@ -5,7 +5,6 @@ import { registerValidation, validationQuery } from "../middleware/Validation.mj
 export const UserRouter = Router();
 
 UserRouter.post("/register",registerValidation, UserController.registerUser);
-
 UserRouter.post('/login', UserController.loginUser);
 UserRouter.get("/", validationQuery, UserController.getPaginatedUser);
 UserRouter.get("/search", UserController.getSearch);

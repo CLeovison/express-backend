@@ -4,23 +4,12 @@ import jwt from "jsonwebtoken";
 
 export const UserController = {
   registerUser: async (req, res) => {
-    // Declaring a new variable to call the UserSchema and requesting the whole body of it
-    const newUser = new User(req.body);
+    const { username, password } = req.body;
 
-    if (!newUser === "") {
-      res.status(401).json({ message: "The form must be fill up" });
-    } else {
-      res.status(201).json({ message: "Registration Successful" });
-    }
-
-    //Validating When The User Already Exist
-    const userExist = await User.findOne({username: req.body.username , email: req.body.email})
-    if(userExist) return res.status(401).send('The User Already Exist')
-    
     try {
-      const savedUser = await newUser.save();
+      const newUser = await User.save()
     } catch (error) {
-      res.status(404).send(error);
+      res.status(400).send("Registration Was Unsucessful");
     }
   },
 
@@ -35,7 +24,6 @@ export const UserController = {
         return res.status(400).json({ message: "Invalid credentials" });
       console.log(password);
       //JWT Authentication
-
 
       const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
 
