@@ -13,12 +13,17 @@ export const UserController = {
       res.status(201).json({ message: "Registration Successful" });
     }
 
+    //Validating When The User Already Exist
+    const userExist = await User.findOne({username: req.body.username , email: req.body.email})
+    if(userExist) return res.status(401).send('The User Already Exist')
+    
     try {
       const savedUser = await newUser.save();
     } catch (error) {
       res.status(404).send(error);
     }
   },
+
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
