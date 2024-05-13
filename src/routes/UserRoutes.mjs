@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { UserController } from "../controllers/UserController.mjs";
 import { registerValidation, validationQuery } from "../middleware/Validation.mjs";
+import { authenticateToken } from "../middleware/Auth.mjs";
 
 export const UserRouter = Router();
 
 UserRouter.post("/register",registerValidation, UserController.registerUser);
 UserRouter.post('/login', UserController.loginUser);
-UserRouter.get("/", validationQuery, UserController.getPaginatedUser);
+UserRouter.get("/",authenticateToken, validationQuery, UserController.getPaginatedUser);
 UserRouter.get("/search", UserController.getSearch);
-UserRouter.get("/:id", UserController.getUserID);
-UserRouter.put("/:id", UserController.updateUser);
-UserRouter.delete("/:id", UserController.deleteUser);
+UserRouter.get("/:id",authenticateToken, UserController.getUserID);
+UserRouter.put("/:id",authenticateToken, UserController.updateUser);
+UserRouter.delete("/:id",authenticateToken, UserController.deleteUser);
