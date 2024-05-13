@@ -13,11 +13,11 @@ const userValidation = Joi.object({
   fname: Joi.string().required(),
   lname: Joi.string().required(),
   username: Joi.string().alphanum().min(8).max(30).required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
+  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9!@#$%&*]{3,30}$")).required(),
   confirm: Joi.ref("password"),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-    .required(),
+    .required()
 });
 
 //Middleware Validation
@@ -36,12 +36,9 @@ export const registerValidation = (req, res, next) => {
   const { error } = userValidation.validate(req.body);
 
   if (error) {
-    res.status(404).json({
-      message: "Invalid output/please provide a correct output",
-      details: error.details,
-    });
+    res
+      .status(404)
+      .json({ message: "Invalid output/please provide a correct output", details: error.details });
   }
- 
   next();
 };
-

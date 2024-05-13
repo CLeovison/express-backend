@@ -7,21 +7,15 @@ import { secretKey } from "../util/SecretToken.mjs";
 
 export const UserController = {
   registerUser: async (req, res) => {
-    // Declaring a new variable to call the UserSchema and requesting the whole body of it
-    const newUser = new User(req.body);
-
-    if (!newUser === "") {
-      res.status(401).json({ message: "The form must be fill up" });
-    } else {
-      res.status(201).json({ message: "Registration Successful" });
-    }
+    const { username, password } = req.body;
 
     try {
-      const savedUser = await newUser.save();
+      const newUser = await User.save()
     } catch (error) {
-      res.status(404).send(error);
+      res.status(400).send("Registration Was Unsucessful");
     }
   },
+
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -31,11 +25,9 @@ export const UserController = {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({ message: "Invalid credentials" });
-
+      console.log(password);
       //JWT Authentication
 
-
-      const { sign, verify } = jwt;
       const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
 
       res.json({
