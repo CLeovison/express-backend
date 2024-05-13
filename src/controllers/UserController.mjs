@@ -1,7 +1,7 @@
 import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import { secretKey } from "../util/SecretToken.mjs";
 
 
 
@@ -44,7 +44,7 @@ export const UserController = {
         user: { id: user._id, username: user.username },
       });
     } catch (error) {
-      res.status(500).json({ message: "Invalid Username/Password", error });
+      res.status(500).json({ message: "Login Failed", error });
     }
   },
 
