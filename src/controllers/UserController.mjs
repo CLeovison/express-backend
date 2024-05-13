@@ -3,32 +3,39 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../util/SecretToken.mjs";
 
-
-
 export const UserController = {
   registerUser: async (req, res) => {
-    const { username, password } = req.body;
+    const newUser = new User(req.body);
+
+    //Validating When The User Already Exist
+    const userExist = await User.findOne({
+      username: req.body.username,
+      email: req.body.email,
+    });
+    if (userExist) return res.status(401).send("The User Already Exist");
 
     try {
-      const newUser = await User.save()
+      const savedUser = await newUser.save();
     } catch (error) {
-      res.status(400).send("Registration Was Unsucessful");
+      return res.status(400).send("Registration Was Unsucessful");
     }
+
+    return res.status(201).json({ message: "Registration Successful" })
   },
 
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
-      const user = await User.findOne({ username });
+      const user = await User.findOne({username});
       if (!user) return res.status(404).json({ message: "User Not Found" });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({ message: "Invalid credentials" });
-      console.log(password);
+
       //JWT Authentication
 
-      const token = sign({ id: user._id }, secretKey, { expiresIn: "1h" });
+      const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "1h" });
 
       res.json({
         message: "Logged in Successfully",
@@ -36,7 +43,8 @@ export const UserController = {
         user: { id: user._id, username: user.username },
       });
     } catch (error) {
-      res.status(500).json({ message: "Login Failed", error });
+      console.log(error);
+      res.status(500).json({ error: "Login Failed" });
     }
   },
 

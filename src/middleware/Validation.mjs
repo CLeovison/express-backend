@@ -39,6 +39,7 @@ export const registerValidation = (req, res, next) => {
     res
       .status(404)
       .json({ message: "Invalid output/please provide a correct output", details: error.details });
+  } else {
+    next();
   }
-  next();
 };
