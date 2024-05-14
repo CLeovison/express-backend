@@ -25,7 +25,7 @@ export const UserController = {
 
   loginUser: async (req, res) => {
     try {
-      const { username, password } = req.body;
+      const { username, password, role } = req.body;
       const user = await User.findOne({username});
       if (!user) return res.status(404).json({ message: "User Not Found" });
 
@@ -33,6 +33,8 @@ export const UserController = {
       if (!isMatch)
         return res.status(400).json({ message: "Invalid credentials" });
 
+
+    
       //JWT Authentication
 
       const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "1h" });

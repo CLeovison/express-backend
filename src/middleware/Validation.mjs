@@ -14,7 +14,7 @@ const userValidation = Joi.object({
   lname: Joi.string().required(),
   username: Joi.string().alphanum().min(8).max(30).required(),
   password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9!@#$%&*]{3,30}$")).required(),
-  confirm: Joi.ref("password"),
+  role: Joi.string().valid('User', 'Admin'),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required()

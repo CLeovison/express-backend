@@ -1,13 +1,17 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+
+
 const UserSchema = new mongoose.Schema({
-  fname: { type: String, require: true },
-  lname: { type: String, require: true },
-  username: { type: String, require: true, unique: true },
-  password: { type: String, require: true },
-  email: { type: String, require: true, unique: true },
-  role:{},
+  fname: { type: String, required: true },
+  lname: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  role: {type: String, enum: ["User", "Admin"], default: "User",
+  isSoftDeleted: {type: Boolean, default: false}
+},
   createAt: { type: Date, default: new Date() },
 });
 
