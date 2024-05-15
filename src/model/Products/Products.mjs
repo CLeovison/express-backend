@@ -1,4 +1,4 @@
-import { required } from "joi";
+
 import mongoose, { mongo } from "mongoose";
 
 export const ProductSchema = new mongoose.Schema({
@@ -10,6 +10,8 @@ export const ProductSchema = new mongoose.Schema({
   isSoftDelete: { type: Boolean, default: false },
 });
 
+
+ProductSchema.index({producttype: "text"})
 export default mongoose.model('Products',ProductSchema)
 // available: {type: Boolean}, productname:{type: String}, productype,productdetails, isSoftDelete
 
