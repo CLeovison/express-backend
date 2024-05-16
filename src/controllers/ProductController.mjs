@@ -17,15 +17,34 @@ export const ProductController = {
       res.status(404).send(error);
     }
   },
-  paginatedProducts: async (req, res) => {},
+  paginatedProducts: async (req, res) => {
+    const {
+      limit = 10,
+      page = 1,
+      sort = "productname",
+      sortBy = "asc",
+      ...filters
+    } = req.body;
 
-  deleteProduct: async (req, res) => {
+    const filterObj = { ...filters };
     try {
-      const deleteProducts = await Products.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: "The Product is Successfully Deleted" });
+      const productPaginated = await Products.find(filterObj)
+        .sort({ [sort]: sortBy === "asc" ? 1 : -1 })
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit));
+
+      const count = await Products.countDocuments();
+      const totalPage = Math.ceil(count / limit);
+      console.log(productPaginated);
+      res.status(200).json({
+        productPaginated,
+        totalPage,
+        limit,
+        count: productPaginated.length,
+      });
     } catch (error) {
       console.log(error);
-      res.status(401).json({ message: "The Product is not Deleted", error });
+      res.status(401).send(error);
     }
   },
 
@@ -44,6 +63,41 @@ export const ProductController = {
     } catch (error) {
       console.log(error);
       res.status(404).send(error);
+    }
+  },
+
+  getProductID: async (req, res) => {
+    try {
+      const productID = await Products.findById(req.params.id);
+      res.status(200).send(productID);
+    } catch (error) {
+      res.status(401).json({ message: "Can't Find The ID", error });
+    }
+  },
+
+  updateProduct: async (req, res) => {
+    
+    try {
+      const updateProducts = await Products.findByIdAndUpdate(
+        req.params.id,
+        req.body
+      );
+      const newlyProduct = await Products.findById(req.params.id)
+      
+      res.status(200).json({message: "The Product Has Been Successfully Updated", newlyProduct});
+    } catch (error) {
+      console.log(error);
+      res.status(401).json({ message: "The Product ID was not registered" });
+    }
+  },
+
+  deleteProduct: async (req, res) => {
+    try {
+      const deleteProducts = await Products.findByIdAndDelete(req.params.id);
+      res.status(200).json({ message: "The Product is Successfully Deleted" });
+    } catch (error) {
+      console.log(error);
+      res.status(401).json({ message: "The Product is not Deleted", error });
     }
   },
 };

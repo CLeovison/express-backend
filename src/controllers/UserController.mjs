@@ -20,21 +20,19 @@ export const UserController = {
       return res.status(400).send("Registration Was Unsucessful");
     }
 
-    return res.status(201).json({ message: "Registration Successful" })
+    return res.status(201).json({ message: "Registration Successful" });
   },
 
   loginUser: async (req, res) => {
     try {
-      const { username, password, role } = req.body;
-      const user = await User.findOne({username});
+      const { username, password } = req.body;
+      const user = await User.findOne({ username });
       if (!user) return res.status(404).json({ message: "User Not Found" });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({ message: "Invalid credentials" });
 
-
-    
       //JWT Authentication
 
       const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "1h" });
