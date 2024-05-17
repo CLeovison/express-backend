@@ -20,6 +20,10 @@ const userValidation = Joi.object({
     .required()
 });
 
+
+const productValidation = Joi.object({
+  
+})
 //Middleware Validation
 export const validationQuery = (req, res, next) => {
   const { error } = queryValidation.validate(req.query);
@@ -43,3 +47,5 @@ export const registerValidation = (req, res, next) => {
     next();
   }
 };
+
+
