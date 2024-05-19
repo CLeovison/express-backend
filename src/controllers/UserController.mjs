@@ -1,6 +1,7 @@
 import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import { secretKey } from "../util/SecretToken.mjs";
 
 export const UserController = {
@@ -143,12 +144,20 @@ export const UserController = {
   },
   forgotPassword: async (req, res) => {
     const { email } = req.body;
-    const forgotPass = await User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!forgotPass)
       return res.status(401).json({ message: "The User Doesn't Exist" });
 
     try {
-      const forgotUser = await User.findOneAndReplace();
+      const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
+
+      //Nodemailer/Forgot Username Password
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user
+        }
+      });
     } catch (error) {}
   },
 };
