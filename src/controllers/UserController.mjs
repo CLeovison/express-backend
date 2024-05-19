@@ -16,11 +16,10 @@ export const UserController = {
 
     try {
       const savedUser = await newUser.save();
+      return res.status(201).json({ message: "Registration Successful" });
     } catch (error) {
       return res.status(400).send("Registration Was Unsucessful");
     }
-
-    return res.status(201).json({ message: "Registration Successful" });
   },
 
   loginUser: async (req, res) => {
@@ -141,6 +140,16 @@ export const UserController = {
     } catch (error) {
       res.status(404).send(error);
     }
+  },
+  forgotPassword: async (req, res) => {
+    const { email } = req.body;
+    const forgotPass = await User.findOne({ email });
+    if (!forgotPass)
+      return res.status(401).json({ message: "The User Doesn't Exist" });
+
+    try {
+      const forgotUser = await User.findOneAndReplace();
+    } catch (error) {}
   },
 };
 

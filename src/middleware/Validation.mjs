@@ -13,17 +13,23 @@ const userValidation = Joi.object({
   fname: Joi.string().required(),
   lname: Joi.string().required(),
   username: Joi.string().alphanum().min(8).max(30).required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9!@#$%&*]{3,30}$")).required(),
-  role: Joi.string().valid('User', 'Admin'),
+  password: Joi.string()
+    .pattern(new RegExp("^[a-zA-Z0-9!@#$%&*]{3,30}$"))
+    .required(),
+  role: Joi.string().valid("User", "Admin"),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-    .required()
+    .required(),
 });
 
-
 const productValidation = Joi.object({
-  
-})
+  available: Joi.number().min(1).required(),
+  productname: Joi.string().required(),
+  producttype: Joi.string().required(),
+  productdetails: Joi.string().required(),
+  variesBy: Joi.string().required(),
+  image: Joi.any().required(),
+});
 //Middleware Validation
 export const validationQuery = (req, res, next) => {
   const { error } = queryValidation.validate(req.query);
@@ -40,12 +46,24 @@ export const registerValidation = (req, res, next) => {
   const { error } = userValidation.validate(req.body);
 
   if (error) {
-    res
-      .status(404)
-      .json({ message: "Invalid output/please provide a correct output", details: error.details });
+    res.status(404).json({
+      message: "Invalid output/please provide a correct output",
+      details: error.details,
+    });
   } else {
     next();
   }
 };
 
+export const productValidationQuery = (req, res, next) => {
+  const { error } = productValidation.validate(req.body);
 
+  if(error){
+    res.status(404).json({
+      message: 'Invalid output/please provide a correct information',
+      details: error.details
+    });
+  }else{
+    next();
+  }
+};
