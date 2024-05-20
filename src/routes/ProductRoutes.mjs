@@ -2,8 +2,7 @@ import { Router } from "express";
 import { ProductController } from "../controllers/ProductController.mjs";
 import { productValidationQuery } from "../middleware/Validation.mjs";
 import { authorizeRoles } from "../middleware/AuthRole.mjs";
-// import { authorizeRoles } from "../middleware/AuthRole.mjs";
-// import { authenticateToken } from "../middleware/Auth.mjs";
+
 export const ProductRouter = Router();
 
 ProductRouter.post("/create",authorizeRoles(['Admin']), productValidationQuery, ProductController.createProduct);

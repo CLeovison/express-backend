@@ -143,8 +143,8 @@ export const UserController = {
     }
   },
   forgotPassword: async (req, res) => {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const { email, username } = req.body;
+    const user = await User.findOne({ email }, { username });
     if (!forgotPass)
       return res.status(401).json({ message: "The User Doesn't Exist" });
 
@@ -152,13 +152,32 @@ export const UserController = {
       const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
 
       //Nodemailer/Forgot Username Password
-      let transporter = nodemailer.createTransport({
+
+      const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "cleovison@gmail.com",
-            pass: " "
-        }
+          user: "youermail@gmail.com",
+          pass: "yourpassword", // Note That The Password That Needs to be in here is the password from app password in google
+        },
       });
+
+      const mailOptions = {
+        from: "youremail@gmail.com",
+        to: email,
+        subject: "Forgot Password",
+        text: "Please Reset your password",
+      };
+
+      transporter.sendMail(mailOptions, (error, info) =>{
+
+        if(error){
+          console.log(error);
+        }else{
+          console.log("Email sent: " + info.response);
+        }
+
+      })
+
     } catch (error) {}
   },
 };
