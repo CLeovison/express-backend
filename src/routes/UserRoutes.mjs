@@ -3,7 +3,6 @@ import { UserController } from "../controllers/UserController.mjs";
 import { registerValidation, validationQuery } from "../middleware/Validation.mjs";
 import { authenticateToken } from "../middleware/Auth.mjs";
 import { authorizeRoles } from "../middleware/AuthRole.mjs";
-import User from "../model/User/User.mjs";
 
 export const UserRouter = Router();
 
