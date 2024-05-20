@@ -155,7 +155,8 @@ export const UserController = {
       let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user
+            user: "cleovison@gmail.com",
+            pass: " "
         }
       });
     } catch (error) {}
