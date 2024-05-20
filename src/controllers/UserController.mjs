@@ -145,7 +145,7 @@ export const UserController = {
   forgotPassword: async (req, res) => {
     const { email, username } = req.body;
     const user = await User.findOne({ email }, { username });
-    if (!forgotPass)
+    if (!user)
       return res.status(401).json({ message: "The User Doesn't Exist" });
 
     try {
@@ -175,10 +175,13 @@ export const UserController = {
         }else{
           console.log("Email sent: " + info.response);
         }
-
+        return res.status(200).json({message: "Please Reset Your Password"})
       })
 
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({error: "Please Provide A Correct Username/Email",error})
+    }
   },
 };
 
