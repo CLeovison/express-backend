@@ -2,7 +2,9 @@ import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import { secretKey } from "../util/SecretToken.mjs";
+import { gEmail, myPassword, secretKey } from "../util/SecretToken.mjs";
+
+
 
 export const UserController = {
   registerUser: async (req, res) => {
@@ -151,33 +153,7 @@ export const UserController = {
     try {
       const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
 
-      //Nodemailer/Forgot Username Password
-
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "youermail@gmail.com",
-          pass: "yourpassword", // Note That The Password That Needs to be in here is the password from app password in google
-        },
-      });
-
-      const mailOptions = {
-        from: "youremail@gmail.com",
-        to: email,
-        subject: "Forgot Password",
-        text: "Please Reset your password",
-      };
-
-      transporter.sendMail(mailOptions, (error, info) =>{
-
-        if(error){
-          console.log(error);
-        }else{
-          console.log("Email sent: " + info.response);
-        }
-        return res.status(200).json({message: "Please Reset Your Password"})
-      })
-
+   
     } catch (error) {
       console.log(error);
       return res.status(400).json({error: "Please Provide A Correct Username/Email",error})

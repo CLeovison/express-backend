@@ -12,9 +12,10 @@ const queryValidation = Joi.object({
 const userValidation = Joi.object({
   fname: Joi.string().required(),
   lname: Joi.string().required(),
-  username: Joi.string().alphanum().min(8).max(30).required(),
+  username: Joi.string().alphanum().min(5).max(30).required(),
   password: Joi.string()
     .pattern(new RegExp("^[a-zA-Z0-9!@#$%&*]{3,30}$"))
+    .alphanum()
     .required(),
   role: Joi.string().valid("User", "Admin"),
   email: Joi.string()
