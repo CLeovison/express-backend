@@ -1,12 +1,14 @@
-import mongoose, { mongo } from "mongoose";
+import { required } from "joi";
+import mongoose, { mongo, SchemaType, SchemaTypeOptions } from "mongoose";
 
 export const ProductSchema = new mongoose.Schema({
   available: { type: Number, required: true },
   productname: { type: String, required: true },
   producttype: { type: String, required: true },
   productdetails: { type: String, required: true },
-  isVariant: { type: Boolean, enum: ["Size", "Color"], required: true },
+  variantOf: { type: String , required: true },
   image: { type: String, required: true },
+  price: {type: Number, required: true},
   isSoftDelete: { type: Boolean, default: false },
 });
 
