@@ -1,10 +1,7 @@
 import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
-import { gEmail, myPassword, secretKey } from "../util/SecretToken.mjs";
-
-
+import { secretKey } from "../util/SecretToken.mjs";
 
 export const UserController = {
   registerUser: async (req, res) => {
@@ -152,11 +149,11 @@ export const UserController = {
 
     try {
       const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
-
-   
     } catch (error) {
       console.log(error);
-      return res.status(400).json({error: "Please Provide A Correct Username/Email",error})
+      return res
+        .status(400)
+        .json({ error: "Please Provide A Correct Username/Email", error });
     }
   },
 };
