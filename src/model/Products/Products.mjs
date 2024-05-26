@@ -9,13 +9,13 @@ export const ProductSchema = new mongoose.Schema({
       productname: { type: String, required: true },
       producttype: { type: String, required: true },
       productdetails: { type: String, required: true },
-      variants: [
-        {
-          size: { type: String, required: true },
-          color: { type: String, required: true },
-        },
-      ],
       price: { type: Number, required: true },
+    },
+  ],
+  variants: [
+    {
+      size: { type: String, required: true },
+      color: { type: String, required: true },
     },
   ],
   image: { type: String, required: true },

@@ -35,7 +35,7 @@ export const ProductController = {
 
       const count = await Products.countDocuments();
       const totalPage = Math.ceil(count / limit);
-      console.log(productPaginated);
+  
       res.status(200).json({
         productPaginated,
         totalPage,
