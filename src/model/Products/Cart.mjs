@@ -6,14 +6,15 @@ export const CartSchema = new mongoose.Schema({
   products: [
     {
       productID: {
-        type: Schema.Types.ObjectId,
+        type: Schema.ObjectId,
         ref: "Product",
         required: true,
       },
+      color: { type: String, required: true },
       size: { type: String, required: true },
-      quantity: { type: Number, default: 1, required: true },
     },
   ],
+  price: {type: Number, required: true}
 });
 
 export default mongoose.model("Cart", CartSchema);
