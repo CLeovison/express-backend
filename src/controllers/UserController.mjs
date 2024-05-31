@@ -143,15 +143,20 @@ export const UserController = {
   },
   forgotPassword: async (req, res) => {
     const { email, username } = req.body;
-    const user = await User.findOne({ email }, { username });
-    if (!user)
-      return res.status(401).json({ message: "The User Doesn't Exist" });
-
+  
     try {
-      const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
+      const user = await User.findOne({ email }, { username });
+      if (!user)
+        return res.status(401).json({ message: "The User Doesn't Exist" });
 
-      if
-      res.status(200).json({message: "You Can Now Reset Your Password"})
+      const secret = secretKey + user.password;
+      const token = jwt.sign({email: user.email, id: user._id},secretKey, {expiresIn: '1h'})
+      const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`
+
+
+      console.log(link)
+      return res.status(200).json({message: 'You Can Now Reset Your Password',token});
+
     } catch (error) {
       console.log(error);
       return res
