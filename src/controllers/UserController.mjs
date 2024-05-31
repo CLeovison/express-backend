@@ -149,6 +149,9 @@ export const UserController = {
 
     try {
       const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
+
+      if
+      res.status(200).json({message: "You Can Now Reset Your Password"})
     } catch (error) {
       console.log(error);
       return res
