@@ -170,7 +170,7 @@ export const UserController = {
   resetPass: async (req, res) => {
     const { id, token } = req.params;
 
-    const user = await User.findOne({ _id: id });
+    const user = await User.find({ _id: id });
     if (!user) {
       return res.status(401).json({ message: "The User Doesn't Exist" });
     }
