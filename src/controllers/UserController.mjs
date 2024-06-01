@@ -150,15 +150,15 @@ export const UserController = {
         return res.status(401).json({ message: "The User Doesn't Exist" });
 
       const secret = secretKey + user.password;
-      const token = jwt.sign({ email: user.email, id: user._id }, secretKey, {
+      const token = jwt.sign({ email: user.email, id: user._id }, secret, {
         expiresIn: "1h",
       });
-      const link = `http://localhost:5000/api/users/forgot-password/${user._id}/${token}`;
+      const link = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
 
       console.log(link);
       return res
         .status(200)
-        .json({ message: "You Can Now Reset Your Password", link });
+        .json({ message: "You Can Now Reset Your Password" });
     } catch (error) {
       console.log(error);
       return res
@@ -167,18 +167,20 @@ export const UserController = {
     }
   },
 
-  changePass: async (req, res) => {
+  resetPass: async (req, res) => {
     const { id, token } = req.params;
+
     const user = await User.findOne({ _id: id });
     if (!user) {
       return res.status(401).json({ message: "The User Doesn't Exist" });
     }
     const secret = secretKey + user.password;
 
-    try{
-
-    }catch(error){
-      res.status(401).json({message: ""})
+    try {
+      const verifyUser = jwt.verify(token, secret);
+      res.status(200).send("Verified");
+    } catch (error) {
+      res.status(401).json({ message: "Not Verified" });
     }
   },
 };
