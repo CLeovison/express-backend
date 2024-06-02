@@ -17,10 +17,7 @@ export const TrialController = {
       });
       const link = `http://localhost:5000/trial/reset-password/${user._id}/${token}`;
 
-    
-      return res
-        .status(200)
-        .json({ message: "You Can Now Reset Your Password" , link});
+      res.status(205).sendFile(path.join(__dirname, 'views/forgot.ejs'));
     } catch (error) {
       console.log(error);
       return res
@@ -40,7 +37,8 @@ export const TrialController = {
 
     try {
       const verifyUser = jwt.verify(token, secret);
-      res.status(205).render("index", { email: verifyUser.email,  });
+      res.status(205).render("index", { email: verifyUser.email });
+      console.log(verifyUser);
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "Not Verified" });
