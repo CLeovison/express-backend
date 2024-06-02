@@ -145,7 +145,7 @@ export const UserController = {
     const { email, username } = req.body;
 
     try {
-      const user = await User.findOne({ email }, { username });
+      const user = await User.findOne({ email } || { username });
       if (!user)
         return res.status(401).json({ message: "The User Doesn't Exist" });
 
@@ -156,6 +156,7 @@ export const UserController = {
       const link = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
 
       console.log(link);
+
       return res
         .status(200)
         .json({ message: "You Can Now Reset Your Password" });
@@ -182,6 +183,9 @@ export const UserController = {
     } catch (error) {
       res.status(401).json({ message: "Not Verified" });
     }
+  },
+  changePass: async (req, res) => {
+    const updatePass = await User.findByIdAndUpdate(req.params.id, req.password)
   },
 };
 

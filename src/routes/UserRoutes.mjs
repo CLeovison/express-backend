@@ -15,6 +15,6 @@ UserRouter.put("/users/:id",authenticateToken, authorizeRoles(['Admin']), UserCo
 UserRouter.delete("/users/:id",authenticateToken, authorizeRoles(['Admin']) , UserController.deleteUser);
 UserRouter.post("/users/forgot-password", UserController.forgotPassword)
 UserRouter.get("/users/reset-password/:id/:token", UserController.resetPass)
-
+UserRouter.get("/users/change/",UserController.changePass)
 
 //Idemponent API Practices - https://blog.hubspot.com/website/idempotent-api
