@@ -5,7 +5,7 @@ import cors from "cors";
 import { UserRouter } from "./routes/UserRoutes.mjs";
 import { ProductRouter } from "./routes/ProductRoutes.mjs";
 import { CartRouter } from "./routes/CartRoutes.mjs";
-import { TrialRouter } from "./routes/TrialRoutes.mjs";
+// import { TrialRouter } from "./routes/TrialRoutes.mjs";
 dotenv.config();
 
 const app = express();
@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.set("view engine", "/src/views/index", "");
 
 
 mongoose
@@ -21,7 +20,7 @@ mongoose
   .then(() => console.log("Database Connectd"))
   .catch((err) => console.log(err));
 
-app.use("/", TrialRouter);
+// app.use("/", TrialRouter);
 app.use("/api/", UserRouter);
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
