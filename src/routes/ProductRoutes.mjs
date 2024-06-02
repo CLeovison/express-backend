@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { ProductController } from "../controllers/ProductController.mjs";
 
-import { authorizeRoles } from "../middleware/AuthRole.mjs";
-
 export const ProductRouter = Router();
 
 ProductRouter.post("/create", ProductController.createProduct);

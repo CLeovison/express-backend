@@ -25,7 +25,7 @@ const mailOptions = {
   text: "Please Reset your password",
 };
 
-transporter.sendMail(mailOptions, (error, info) => {
+ transporter.sendMail(mailOptions, (error, info) => {
   if (error) {
     console.log(error);
   } else {

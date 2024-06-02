@@ -150,7 +150,7 @@ export const UserController = {
         return res.status(401).json({ message: "The User Doesn't Exist" });
 
       const secret = secretKey + user.password;
-      const token = jwt.sign({ email: user.email, id: user._id }, secret, {
+      const token = jwt.sign({ email: user.email}, secret, {
         expiresIn: "1h",
       });
       const link = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
@@ -178,8 +178,9 @@ export const UserController = {
 
     try {
       const verifyUser = jwt.verify(token, secret);
-      res.status(200).send("Verified");
+      res.status(205).render('index',{email: verifyUser.email})
     } catch (error) {
+      console.log(error);
       res.status(401).json({ message: "Not Verified" });
     }
   },
