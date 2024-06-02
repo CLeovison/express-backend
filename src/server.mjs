@@ -13,18 +13,18 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.set("view engine", "ejs");
+app.set("view engine", "/src/views/index", "");
+
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database Connectd"))
   .catch((err) => console.log(err));
 
-app.use("/api", UserRouter);
+app.use("/", TrialRouter);
+app.use("/api/", UserRouter);
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
-
-
 
 app.listen(PORT, () => {
   console.log(`Server Running On Port ${PORT}`);
