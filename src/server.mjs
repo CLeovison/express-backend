@@ -5,7 +5,7 @@ import cors from "cors";
 import { UserRouter } from "./routes/UserRoutes.mjs";
 import { ProductRouter } from "./routes/ProductRoutes.mjs";
 import { CartRouter } from "./routes/CartRoutes.mjs";
-
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -14,6 +14,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req,res) =>{
+  res.sendFile(path.join(__dirname, '/views/index.html'))
+})
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database Connectd"))

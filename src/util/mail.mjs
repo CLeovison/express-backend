@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 dotenv.config();
 
 
-export default function Mail(){
+export default function Mail(options){
   
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -20,9 +20,9 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: "cleovison@gmail.com",
-  to: email,
+  to: options.email,
   subject: "Forgot Password",
-  text: "Please Reset your password",
+  text: "Here are your password link",
 };
 
  transporter.sendMail(mailOptions, (error, info) => {

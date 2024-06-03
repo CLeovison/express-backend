@@ -1,6 +1,7 @@
 import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import path from "path";
 import { secretKey } from "../util/SecretToken.mjs";
 
 export const UserController = {
@@ -143,28 +144,24 @@ export const UserController = {
   },
   forgotPassword: async (req, res) => {
     const { email, username } = req.body;
-
     try {
-      const user = await User.findOne({ email } || { username });
+      const user = await User.findOne({ email }, { username });
       if (!user)
         return res.status(401).json({ message: "The User Doesn't Exist" });
 
       const secret = secretKey + user.password;
-      const token = jwt.sign({ email: user.email, id: user._id }, secret, {
+      const token = jwt.sign({ id: user._id, email: user.email }, secret, {
         expiresIn: "1h",
       });
+
       const link = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
-
       console.log(link);
-
-      return res
-        .status(200)
-        .json({ message: "You Can Now Reset Your Password" });
+      return res.status(200).json({ message: "Please Reset Your Password" });
     } catch (error) {
       console.log(error);
       return res
         .status(400)
-        .json({ error: "Please Provide A Correct Username/Email", error });
+        .json({ error: "Please Provide A Correct Email", error });
     }
   },
 
@@ -179,13 +176,18 @@ export const UserController = {
 
     try {
       const verifyUser = jwt.verify(token, secret);
-      res.status(200).send("Verified");
+
+      res.status(200).json({ message: "You Can Now Reset Your Password" });
     } catch (error) {
-      res.status(401).json({ message: "Not Verified" });
+      console.log(error);
+      res.status(401).json({ message: "You're Credentials Are Not Verified" });
     }
   },
   changePass: async (req, res) => {
-    const updatePass = await User.findByIdAndUpdate(req.params.id, req.password)
+    const updatePass = await User.findByIdAndUpdate(
+      req.params.id,
+      req.password
+    );
   },
 };
 
