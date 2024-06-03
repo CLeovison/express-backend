@@ -154,8 +154,8 @@ export const UserController = {
         expiresIn: "1h",
       });
 
-      const link = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
-      console.log(link);
+      const resetURL = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
+      console.log(resetURL);
       return res.status(200).json({ message: "Please Reset Your Password" });
     } catch (error) {
       console.log(error);
