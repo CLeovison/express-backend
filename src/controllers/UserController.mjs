@@ -1,7 +1,7 @@
 import User from "../model/User/User.mjs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import path from "path";
+
 import { secretKey } from "../util/SecretToken.mjs";
 
 export const UserController = {
@@ -143,9 +143,9 @@ export const UserController = {
     }
   },
   forgotPassword: async (req, res) => {
-    const { email, username } = req.body;
+    const { email } = req.body;
     try {
-      const user = await User.findOne({ email }, { username });
+      const user = await User.findOne({ email });
       if (!user)
         return res.status(401).json({ message: "The User Doesn't Exist" });
 
@@ -168,7 +168,7 @@ export const UserController = {
   resetPass: async (req, res) => {
     const { id, token } = req.params;
 
-    const user = await User.find({ _id: id });
+    const user = await User.findOne({ _id: id });
     if (!user) {
       return res.status(401).json({ message: "The User Doesn't Exist" });
     }
@@ -184,10 +184,7 @@ export const UserController = {
     }
   },
   changePass: async (req, res) => {
-    const updatePass = await User.findByIdAndUpdate(
-      req.params.id,
-      req.password
-    );
+    const updatePass = await User.findByIdAndUpdate(req.params.id, req.password);
   },
 };
 
