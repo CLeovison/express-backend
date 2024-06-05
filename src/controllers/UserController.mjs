@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import { secretKey } from "../util/SecretToken.mjs";
-
+import Mail from "../util/Mail.mjs";
 export const UserController = {
   registerUser: async (req, res) => {
     const newUser = new User(req.body);
@@ -155,7 +155,8 @@ export const UserController = {
       });
 
       const resetURL = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
-      console.log(resetURL);
+      console.log(resetURL)
+      // Mail({ email: email, link: resetURL });
       return res.status(200).json({ message: "Please Reset Your Password" });
     } catch (error) {
       console.log(error);
@@ -175,17 +176,19 @@ export const UserController = {
     const secret = secretKey + user.password;
 
     try {
-      const verifyUser = jwt.verify(token, secret);
-
-      res.status(200).json({ message: "You Can Now Reset Your Password" });
+    const verifyUser = jwt.verify(token, secret);
+  
+    const updatePass = await User.findByIdAndUpdate(id)
+    updatePass.password = req.body.password
+    updatePass.save()
+    
+      res.status(200).json({message: "Success!"})
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "You're Credentials Are Not Verified" });
     }
   },
-  changePass: async (req, res) => {
-    const updatePass = await User.findByIdAndUpdate(req.params.id, req.password);
-  },
+  
 };
 
 //Reference
