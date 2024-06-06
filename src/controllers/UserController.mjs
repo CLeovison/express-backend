@@ -156,7 +156,7 @@ export const UserController = {
 
       const resetURL = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
       console.log(resetURL)
-      // Mail({ email: email, link: resetURL });
+      Mail({ email: email, link: resetURL });
       return res.status(200).json({ message: "Please Reset Your Password" });
     } catch (error) {
       console.log(error);
