@@ -22,7 +22,7 @@ export const ProductSchema = new mongoose.Schema({
   isSoftDelete: { type: Boolean, default: false },
 });
 
-ProductSchema.index({ producttype: "text" });
+ProductSchema.index({ productname: "text", producttype: "text" });
 export default mongoose.model("Products", ProductSchema);
 // available: {type: Boolean}, productname:{type: String}, productype,productdetails, isSoftDelete
 
