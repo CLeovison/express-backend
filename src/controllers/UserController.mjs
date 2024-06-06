@@ -134,7 +134,9 @@ export const UserController = {
   },
   deleteUser: async (req, res) => {
     try {
-      const deleteUser = await User.findByIdAndDelete(req.params.id);
+      const deleteUser = await User.findById(req.params.id);
+      deleteUser.isSoftDelete = true;
+      deleteUser.save();
       res
         .status(200)
         .send({ message: "The User Has Been Successfully Deleted" });
@@ -155,7 +157,7 @@ export const UserController = {
       });
 
       const resetURL = `http://localhost:5000/api/users/reset-password/${user._id}/${token}`;
-      console.log(resetURL)
+      console.log(resetURL);
       Mail({ email: email, link: resetURL });
       return res.status(200).json({ message: "Please Reset Your Password" });
     } catch (error) {
@@ -176,19 +178,18 @@ export const UserController = {
     const secret = secretKey + user.password;
 
     try {
-    const verifyUser = jwt.verify(token, secret);
-  
-    const updatePass = await User.findByIdAndUpdate(id)
-    updatePass.password = req.body.password
-    updatePass.save()
-    
-      res.status(200).json({message: "Success!"})
+      const verifyUser = jwt.verify(token, secret);
+
+      const updatePass = await User.findById(id);
+      updatePass.password = req.body.password;
+      updatePass.save();
+
+      res.status(200).json({ message: "Success!" });
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "You're Credentials Are Not Verified" });
     }
   },
-  
 };
 
 //Reference

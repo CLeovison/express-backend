@@ -23,10 +23,11 @@ export const ProductController = {
       page = 1,
       sort = "productname",
       sortBy = "asc",
+
       ...filters
     } = req.body;
 
-    const filterObj = { ...filters };
+    const filterObj = { isSoftDelete: false, ...filters };
     try {
       const productPaginated = await Products.find(filterObj)
         .sort({ [sort]: sortBy === "asc" ? 1 : -1 })
@@ -35,7 +36,7 @@ export const ProductController = {
 
       const count = await Products.countDocuments();
       const totalPage = Math.ceil(count / limit);
-  
+
       res.status(200).json({
         productPaginated,
         totalPage,
@@ -76,15 +77,17 @@ export const ProductController = {
   },
 
   updateProduct: async (req, res) => {
-    
     try {
       const updateProducts = await Products.findByIdAndUpdate(
         req.params.id,
         req.body
       );
-      const newlyProduct = await Products.findById(req.params.id)
-      
-      res.status(200).json({message: "The Product Has Been Successfully Updated", newlyProduct});
+      const newlyProduct = await Products.findById(req.params.id);
+
+      res.status(200).json({
+        message: "The Product Has Been Successfully Updated",
+        newlyProduct,
+      });
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "The Product ID was not registered" });
@@ -93,7 +96,9 @@ export const ProductController = {
 
   deleteProduct: async (req, res) => {
     try {
-      const deleteProducts = await Products.findByIdAndDelete(req.params.id);
+      const deleteProducts = await Products.findById(req.params.id);
+      deleteProducts.isSoftDelete = true;
+      deleteProducts.save();
       res.status(200).json({ message: "The Product is Successfully Deleted" });
     } catch (error) {
       console.log(error);

@@ -25,7 +25,7 @@ mongoose
   app.use("/api/", UserRouter);
   app.use("/api/products", ProductRouter);
   app.use("/api/carts", CartRouter);
-  app.use("/", MainRouter)
+  app.use("/api/wishlist", MainRouter)
 
   
 app.listen(PORT, () => {

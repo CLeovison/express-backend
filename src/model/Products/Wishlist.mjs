@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-export const WishListSchema = new mongoose.Schema({
-  userID: {type: Schema.ObjectId, ref: "User"},
+const WishListSchema = new mongoose.Schema({
+  userID: { type: Schema.ObjectId, ref: "User" },
   productId: { type: Schema.ObjectId, ref: "Products", required: true },
   variants: [
     {
@@ -10,8 +10,7 @@ export const WishListSchema = new mongoose.Schema({
       size: { type: String, required: true },
     },
   ],
-  isLiked:{type: Boolean, default: false},
   price: { type: Number, required: true },
 });
 
-export default mongoose.model('WishList', WishListSchema)
+export default mongoose.model("WishList", WishListSchema);
