@@ -171,13 +171,14 @@ export const UserController = {
   resetPass: async (req, res) => {
     const { id, token } = req.params;
 
-    const user = await User.findOne({ _id: id });
-    if (!user) {
-      return res.status(401).json({ message: "The User Doesn't Exist" });
-    }
-    const secret = secretKey + user.password;
-
     try {
+      const user = await User.findOne({ _id: id });
+      if (!user) {
+        return res.status(401).json({ message: "The User Doesn't Exist" });
+      }
+
+      
+      const secret = secretKey + user.password;
       const verifyUser = jwt.verify(token, secret);
 
       const updatePass = await User.findById(id);

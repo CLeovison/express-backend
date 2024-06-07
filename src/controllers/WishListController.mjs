@@ -26,7 +26,7 @@ export const WishListController = {
   },
   removeWishList: async (req, res) => {
     try {
-      const removeList = await Wishlist.findByIdAndDelete();
+      const removeList = await Wishlist.findByIdAndDelete(req.params.id);
       res.status(200).json({ message: "You Successfuly Remove The Item" });
     } catch (error) {
       console.log(error);
