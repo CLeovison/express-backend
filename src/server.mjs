@@ -5,7 +5,7 @@ import cors from "cors";
 import { UserRouter } from "./routes/UserRoutes.mjs";
 import { ProductRouter } from "./routes/ProductRoutes.mjs";
 import { CartRouter } from "./routes/CartRoutes.mjs";
-import { MainRouter } from "./routes/MainRoutes.mjs";
+import { WishListRouter } from "./routes/WishListRoutes.mjs";
 
 dotenv.config();
 
@@ -22,12 +22,11 @@ mongoose
   .then(() => console.log("Database Connectd"))
   .catch((err) => console.log(err));
 
-  app.use("/api/", UserRouter);
-  app.use("/api/products", ProductRouter);
-  app.use("/api/carts", CartRouter);
-  app.use("/api/wishlist", MainRouter)
+app.use("/api/", UserRouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/carts", CartRouter);
+app.use("/api/wishlist", WishListRouter);
 
-  
 app.listen(PORT, () => {
   console.log(`Server Running On Port ${PORT}`);
 });
