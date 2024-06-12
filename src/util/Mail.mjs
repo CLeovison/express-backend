@@ -11,7 +11,7 @@ export default async function Mail(options) {
     port: 465,
     secure: true,
     auth: {
-      user: process.env.EMAIL,
+      user: process.env.USER,
       pass: process.env.APP_PASSWORD, // Note That The Password That Needs to be in here is the password from app password in google
     },
   });
@@ -20,7 +20,7 @@ export default async function Mail(options) {
     from: "cleovison@gmail.com",
     to: options.email,
     subject: "Forgot Password",
-    text: "Here is your password link " + options.link,
+    text: "Here is your password link: " + options.link,
   };
 
   await transporter.sendMail(mailOptions, (error, info) => {
@@ -31,4 +31,3 @@ export default async function Mail(options) {
     }
   });
 }
-

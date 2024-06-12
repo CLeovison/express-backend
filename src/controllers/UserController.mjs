@@ -125,7 +125,7 @@ export const UserController = {
   },
 
   updateUser: async (req, res) => {
-    try {
+    try {wd
       const updateUsers = await User.findByIdAndUpdate(req.params.id, req.body);
       res.status(201).send(updateUsers);
     } catch (error) {
@@ -177,7 +177,6 @@ export const UserController = {
         return res.status(401).json({ message: "The User Doesn't Exist" });
       }
 
-      
       const secret = secretKey + user.password;
       const verifyUser = jwt.verify(token, secret);
 
