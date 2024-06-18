@@ -125,7 +125,7 @@ export const UserController = {
   },
 
   updateUser: async (req, res) => {
-    try {wd
+    try {
       const updateUsers = await User.findByIdAndUpdate(req.params.id, req.body);
       res.status(201).send(updateUsers);
     } catch (error) {

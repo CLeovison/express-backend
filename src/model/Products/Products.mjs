@@ -5,7 +5,7 @@ export const ProductSchema = new mongoose.Schema({
   productinfo: {
     productname: { type: String, required: true },
     producttype: { type: String, required: true },
-    productdetails: { type: String, required: true },
+    description: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
   },
@@ -15,7 +15,8 @@ export const ProductSchema = new mongoose.Schema({
     color: { type: String, required: true },
   },
 
-  image: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  update: { type: Date },
   isSoftDelete: { type: Boolean, default: false },
 });
 
