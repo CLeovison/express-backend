@@ -23,7 +23,6 @@ export const ProductController = {
       page = 1,
       sort = "productname",
       sortBy = "asc",
-
       ...filters
     } = req.body;
 
