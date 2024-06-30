@@ -25,11 +25,14 @@ const userValidation = Joi.object({
 
 const productValidation = Joi.object({
   available: Joi.number().min(1).required(),
+  price: Joi.number().required(),
   productname: Joi.string().required(),
   producttype: Joi.string().required(),
   productdetails: Joi.string().required(),
   variesBy: Joi.string().required(),
-  image: Joi.any().required(),
+  size: Joi.string().required(),
+  color: Joi.string().required(),
+  quantity: Joi.number().required(),
 });
 //Middleware Validation
 export const validationQuery = (req, res, next) => {
@@ -59,12 +62,12 @@ export const registerValidation = (req, res, next) => {
 export const productValidationQuery = (req, res, next) => {
   const { error } = productValidation.validate(req.body);
 
-  if(error){
+  if (error) {
     res.status(404).json({
-      message: 'Invalid output/please provide a correct information',
-      details: error.details
+      message: "Invalid output/please provide a correct information",
+      details: error.details,
     });
-  }else{
+  } else {
     next();
   }
 };
