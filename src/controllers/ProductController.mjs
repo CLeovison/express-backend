@@ -49,7 +49,7 @@ export const ProductController = {
   },
 
   searchProduct: async (req, res) => {
-    const searchProduct = req.query.products;
+    const searchProduct = req.query.search;
 
     if (!searchProduct) {
       return res.status(400).json({ message: "No search provided" });
