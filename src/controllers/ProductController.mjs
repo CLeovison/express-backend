@@ -24,11 +24,21 @@ export const ProductController = {
       sort = "productname",
       sortBy = "asc",
       ...filters
-    } = req.body;
+    } = req.query;
 
-    const filterObj = { isSoftDelete: false, ...filters };
+    const filtersObj = {isSoftDelete: "false", ...filters}
+
+    Object.keys(filtersObj).forEach((x) => {
+      if (x.substring(0, 2) == "is") {
+        if (filtersObj[x].toLowerCase() == "any") delete filtersObj[x]
+      } else {
+        filtersObj[x] = new RegExp(filtersObj[x].trim(), "i")
+      }
+      return x;
+    });
+
     try {
-      const productPaginated = await Products.find(filterObj)
+      const productPaginated = await Products.find(filtersObj)
         .sort({ [sort]: sortBy === "asc" ? 1 : -1 })
         .limit(parseInt(limit))
         .skip((parseInt(page) - 1) * parseInt(limit));
@@ -45,24 +55,6 @@ export const ProductController = {
     } catch (error) {
       console.log(error);
       res.status(401).send(error);
-    }
-  },
-
-  searchProduct: async (req, res) => {
-    const searchProduct = req.query.search;
-
-    if (!searchProduct) {
-      return res.status(400).json({ message: "No search provided" });
-    }
-
-    try {
-      const results = await Products.find({
-        $text: { $search: searchProduct },
-      });
-      res.status(200).json(results);
-    } catch (error) {
-      console.log(error);
-      res.status(404).send(error);
     }
   },
 
