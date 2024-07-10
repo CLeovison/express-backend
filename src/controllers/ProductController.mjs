@@ -26,16 +26,7 @@ export const ProductController = {
       ...filters
     } = req.query;
 
-    const filtersObj = {isSoftDelete: "false", ...filters}
-
-    Object.keys(filtersObj).forEach((x) => {
-      if (x.substring(0, 2) == "is") {
-        if (filtersObj[x].toLowerCase() == "any") delete filtersObj[x]
-      } else {
-        filtersObj[x] = new RegExp(filtersObj[x].trim(), "i")
-      }
-      return x;
-    });
+    const filtersObj = { ...filters };
 
     try {
       const productPaginated = await Products.find(filtersObj)
@@ -58,6 +49,22 @@ export const ProductController = {
     }
   },
 
+  getSearch: async(req,res) =>{
+    const searchTerm = req.query.term;
+
+    if (!searchTerm) {
+      return res.status(400).json({ message: "No search term provided" });
+    }
+    try {
+      const results = await Products.find({
+        $text: { $search: searchTerm },
+      });
+      console.log(results)
+      res.status(200).json(results);
+    } catch (error) {
+      res.status(500).json({ message: "Error searching for users", error });
+    }
+  },
   getProductID: async (req, res) => {
     try {
       const productID = await Products.findById(req.params.id);

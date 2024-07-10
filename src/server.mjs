@@ -23,7 +23,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/", UserRouter);
-app.use("/api/products", ProductRouter);
+app.use("/api/", ProductRouter);
 app.use("/api/carts", CartRouter);
 app.use("/api/wishlist", WishListRouter);
 

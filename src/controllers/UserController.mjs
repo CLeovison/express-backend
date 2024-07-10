@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { secretKey } from "../util/SecretToken.mjs";
 import Mail from "../util/Mail.mjs";
+
 export const UserController = {
   registerUser: async (req, res) => {
     const newUser = new User(req.body);
@@ -117,7 +118,7 @@ export const UserController = {
       const results = await User.find({
         $text: { $search: searchTerm },
       });
-
+      console.log(results)
       res.status(200).json(results);
     } catch (error) {
       res.status(500).json({ message: "Error searching for users", error });
