@@ -55,6 +55,8 @@ export const ProductController = {
     if (!searchTerm) {
       return res.status(400).json({ message: "No search term provided" });
     }
+
+    console.log(searchTerm)
     try {
       const results = await Products.find({
         $text: { $search: searchTerm },
