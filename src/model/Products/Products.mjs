@@ -15,7 +15,11 @@ export const ProductSchema = new mongoose.Schema({
     color: { type: String, required: true },
   },
 
-  imageUrl: { type: Buffer, required: true },
+  image:{
+      file:{type: Buffer, required: true},
+      filename:{type: String, required: true},
+      mimetype: {type: String, required: true}
+  },
   update: { type: Date },
   isSoftDelete: { type: Boolean, default: false },
 });
