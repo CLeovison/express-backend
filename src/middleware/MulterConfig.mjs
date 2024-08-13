@@ -8,6 +8,7 @@ export const storage = multer.diskStorage({
     cb(null, cwd() + "/uploads/");
   },
   filename: function (req, file, cb) {
+    const suffix  = 
     cb(
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)

@@ -20,6 +20,7 @@ export const ProductSchema = new mongoose.Schema({
   },
   update: { type: Date },
   isSoftDelete: { type: Boolean, default: false },
+  createAt: { type: Date, default: new Date() }
 });
 
 ProductSchema.index({ productname: "text", producttype: "text" });
