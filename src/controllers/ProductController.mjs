@@ -16,11 +16,7 @@ export const ProductController = {
       res.status(200).send({ message: "You Successfully Created A Product" });
 
       //Image of the Product
-      const imageFile = await Products.findOne({image: req.file.image})
-      if(imageFile > 1){
-        return res.status(401).send("You Already Exceed the Maximum File to Upload")
-      }
-      const savedImage = await imageProduct.save()
+
     } catch (error) {
       console.log(error);
 
