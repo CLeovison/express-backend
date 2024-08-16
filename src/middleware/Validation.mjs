@@ -23,17 +23,17 @@ const userValidation = Joi.object({
     .required(),
 });
 
-const productValidation = Joi.object({
-  available: Joi.number().min(1).required(),
-  price: Joi.number().required(),
-  productname: Joi.string().required(),
-  producttype: Joi.string().required(),
-  productdetails: Joi.string().required(),
-  variesBy: Joi.string().required(),
-  size: Joi.string().required(),
-  color: Joi.string().required(),
-  quantity: Joi.number().required(),
-});
+// const productValidation = Joi.object({
+//   available: Joi.number().min(1).required(),
+//   price: Joi.number().required(),
+//   productname: Joi.string().required(),
+//   producttype: Joi.string().required(),
+//   productdetails: Joi.string().required(),
+//   variesBy: Joi.string().required(),
+//   size: Joi.string().required(),
+//   color: Joi.string().required(),
+//   quantity: Joi.number().required(),
+// });
 //Middleware Validation
 export const validationQuery = (req, res, next) => {
   const { error } = queryValidation.validate(req.query);
