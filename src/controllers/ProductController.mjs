@@ -105,4 +105,17 @@ export const ProductController = {
       res.status(401).json({ message: "The Product is not Deleted", error });
     }
   },
+
+  getImage: async (req, res) => {
+    const { image } = req.file.filename;
+
+    try {
+      const getImage = await Products.findById({ image });
+      if (!getImage) {
+        res.status(404).json({ message: "The Image Doesn't Exist" });
+      }
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  },
 };
