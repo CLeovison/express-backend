@@ -4,6 +4,8 @@ export const ProductController = {
   createProduct: async (req, res) => {
     const newProduct = new Products(req.body);
     const imageProduct = new Products(req.file);
+
+    
     try {
       //Entire Product
       const productExist = await Products.findOne({ _id: req.body._id });

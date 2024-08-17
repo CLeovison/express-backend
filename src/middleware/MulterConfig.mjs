@@ -1,13 +1,13 @@
 import multer from "multer";
 import path from "path";
-import { cwd } from "node:process";
 
+import { cwd } from "node:process";
+console.log(cwd())
 export const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, cwd() + "./uploads/");
+    cb(null, cwd() + "/uploads/");
   },
   filename: function (req, file, cb) {
-    const suffix  = 
     cb(
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
