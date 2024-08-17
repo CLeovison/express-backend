@@ -1,7 +1,7 @@
 import Products from "../model/Products/Products.mjs";
 
 export const ProductController = {
-   createProduct : async (req, res) => {
+  createProduct: async (req, res) => {
     try {
       const { available, productinfo, variants } = req.body;
 
@@ -15,18 +15,17 @@ export const ProductController = {
       });
 
       const result = await Products.create(newProduct);
-      if (!result){
-        res.status(400).send({message: "Product did not saved"})
-      }else{
+      if (!result) {
+        res.status(400).send({ message: "Product did not saved" });
+      } else {
         res.status(201).send(result);
       }
-      
     } catch (error) {
       console.error(error);
       res.status(500).send(error);
     }
   },
-  
+
   paginatedProducts: async (req, res) => {
     const {
       limit = 10,
