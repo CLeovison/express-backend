@@ -2,7 +2,15 @@ import Products from "../model/Products/Products.mjs";
 
 export const ProductController = {
   createProduct: async (req, res) => {
-    const newProduct = new Products(req.body);
+    const { available, productinfo, variants } = req.body;
+    const newProduct = new Products({
+      available,
+      productinfo,
+      variants,
+      image:{
+        filename: req.file.filename
+      }
+    });
 
     try {
       //Entire Product
