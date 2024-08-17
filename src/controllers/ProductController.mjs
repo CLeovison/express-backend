@@ -1,32 +1,32 @@
 import Products from "../model/Products/Products.mjs";
 
 export const ProductController = {
-  createProduct: async (req, res) => {
-    const newProduct = new Products(req.body);
-    const imageProduct = new Products(req.file);
+   createProduct : async (req, res) => {
     try {
-      //Entire Product
-      const productExist = await Products.findOne({ _id: req.body._id });
+      const { available, productinfo, variants } = req.body;
 
-      if (productExist) {
-        return res.status(401).send("The Item Already Exist");
+      const newProduct = new Products({
+        available,
+        productinfo,
+        variants,
+        image: {
+          filename: req.file.filename,
+        },
+      });
+
+      const result = await Products.create(newProduct);
+      if (!result){
+        res.status(400).send({message: "Product did not saved"})
+      }else{
+        res.status(201).send(result);
       }
-
-      const savedProduct = await newProduct.save();
-      res.status(200).send({ message: "You Successfully Created A Product" });
-
-      //Image of the Product
-      const imageFile = await Products.findOne({image: req.file.image})
-      if(imageFile > 1){
-        return res.status(401).send("You Already Exceed the Maximum File to Upload")
-      }
-      const savedImage = await imageProduct.save()
+      
     } catch (error) {
-      console.log(error);
-
-      res.status(404).send(error);
+      console.error(error);
+      res.status(500).send(error);
     }
   },
+  
   paginatedProducts: async (req, res) => {
     const {
       limit = 10,
