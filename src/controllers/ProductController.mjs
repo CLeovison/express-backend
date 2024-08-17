@@ -3,7 +3,7 @@ import Products from "../model/Products/Products.mjs";
 export const ProductController = {
   createProduct: async (req, res) => {
     const newProduct = new Products(req.body);
-    const imageProduct = new Products(req.file);
+
     try {
       //Entire Product
       const productExist = await Products.findOne({ _id: req.body._id });
@@ -16,14 +16,8 @@ export const ProductController = {
       res.status(200).send({ message: "You Successfully Created A Product" });
 
       //Image of the Product
-      const imageFile = await Products.findOne({image: req.file.image})
-      if(imageFile > 1){
-        return res.status(401).send("You Already Exceed the Maximum File to Upload")
-      }
-      const savedImage = await imageProduct.save()
     } catch (error) {
       console.log(error);
-
       res.status(404).send(error);
     }
   },
