@@ -6,7 +6,8 @@ import { UserRouter } from "./routes/UserRoutes.mjs";
 import { ProductRouter } from "./routes/ProductRoutes.mjs";
 import { CartRouter } from "./routes/CartRoutes.mjs";
 import { WishListRouter } from "./routes/WishListRoutes.mjs";
-
+import path from "path";
+import { cwd } from "process";
 dotenv.config();
 
 const app = express();
@@ -16,7 +17,8 @@ app.set("views", "src/views/");
 
 app.use(cors());
 app.use(express.json());
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/images', express.static(path.join(cwd(), 'images')))
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database Connectd"))
