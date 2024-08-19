@@ -8,6 +8,7 @@ import { CartRouter } from "./routes/CartRoutes.mjs";
 import { WishListRouter } from "./routes/WishListRoutes.mjs";
 import path from "path";
 import { cwd } from "process";
+
 dotenv.config();
 
 const app = express();
