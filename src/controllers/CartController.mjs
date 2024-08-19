@@ -3,7 +3,7 @@ import Cart from "../model/Products/Cart.mjs";
 export const CartController = {
   addCart: async (req, res) => {
     const newCart = new Cart(req.body);
-
+    
     try {
       const savedCart = await newCart.save();
 
