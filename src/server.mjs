@@ -18,7 +18,7 @@ app.set("views", "src/views/");
 
 app.use(cors());
 app.use(express.json());
-app.use('/images', express.static(path.join(cwd(), 'images')))
+app.use('./uploads', express.static(path.join(cwd(), './uploads')))
 
 mongoose
   .connect(process.env.MONGODB_URI)

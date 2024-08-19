@@ -7,9 +7,9 @@ export const ProductController = {
       available,
       productinfo,
       variants,
-      image:{
-        filename: req.file.filename
-      }
+      image: {
+        filename: req.file.filename,
+      },
     });
 
     try {
@@ -20,11 +20,21 @@ export const ProductController = {
         return res.status(401).send("The Item Already Exist");
       }
       const savedProduct = await newProduct.save();
-      res.status(200).send({ message: "You Successfully Created A Product" })
+      res.status(200).send({ message: "You Successfully Created A Product" });
       //Image of the Product
     } catch (error) {
       console.log(error);
       res.status(404).send(error);
+    }
+  },
+
+  getImage: async (req,res) => {
+
+    try{
+      const getImg = await Products.findById({image: req.file.filename})
+      res.status(200).send(getImg)
+    }catch(error){
+      res.status(404).json("The Image that you are searching is not available")
     }
   },
   paginatedProducts: async (req, res) => {
