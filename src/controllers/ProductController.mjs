@@ -2,8 +2,16 @@ import Products from "../model/Products/Products.mjs";
 
 export const ProductController = {
   createProduct: async (req, res) => {
-    const newProduct = new Products(req.body);
-    const imageProduct = new Products(req.file);
+    const { available, productinfo, variants } = req.body;
+    const newProduct = new Products({
+      available,
+      productinfo,
+      variants,
+      image:{
+        filename: req.file.filename
+      }
+    });
+
     try {
       //Entire Product
       const productExist = await Products.findOne({ _id: req.body._id });
@@ -16,7 +24,6 @@ export const ProductController = {
       //Image of the Product
     } catch (error) {
       console.log(error);
-
       res.status(404).send(error);
     }
   },
