@@ -28,15 +28,6 @@ export const ProductController = {
     }
   },
 
-  getImage: async (req,res) => {
-
-    try{
-      const getImg = await Products.findById({image: req.file.filename})
-      res.status(200).send(getImg)
-    }catch(error){
-      res.status(404).json("The Image that you are searching is not available")
-    }
-  },
   paginatedProducts: async (req, res) => {
     const {
       limit = 10,
